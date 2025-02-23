@@ -12,6 +12,11 @@ use Psr\Log\LoggerInterface;
 class Agent
 {
     /**
+     * @var array<Tool>
+     */
+    private array $tools = [];
+
+    /**
      * @param ClientInterface&RequestFactoryInterface&StreamFactoryInterface $httpClient
      */
     public function __construct(
@@ -20,6 +25,11 @@ class Agent
         private readonly LoggerInterface $logger,
         private readonly string $apiKey,
     ) {
+    }
+
+    public function addTool(Tool $tool): void
+    {
+        $this->tools[] = $tool;
     }
 
     public function create(Message $systemPromptMessage): self
@@ -74,6 +84,10 @@ class Agent
             'messages' => $this->context->getMessages(),
             'temperature' => 0.1,
         ];
+        if (!empty($this->tools)) {
+            $body['tools'] = $this->tools;
+            $body['tool_choice'] = 'auto';
+        }
 
         return \json_encode($body);
     }
