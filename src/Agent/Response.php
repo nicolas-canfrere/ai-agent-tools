@@ -53,8 +53,21 @@ class Response
         return new Message($role, $this->getMessage());
     }
 
+    public function getRefusal(): ?string
+    {
+        if (empty($this->choices[0]['message']['refusal'])) {
+            return null;
+        }
+
+        return $this->choices[0]['message']['refusal'];
+    }
+
     public function getMessage(): string
     {
+        if (null !== $refusal = $this->getRefusal()) {
+            return $refusal;
+        }
+
         return $this->choices[0]['message']['content'] ?? '';
     }
 
