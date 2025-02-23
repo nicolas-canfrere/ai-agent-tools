@@ -4,6 +4,5 @@ parameters:
         - config
         - public
         - src
-        - tests
     excludePaths:
         - tests/bootstrap.php
