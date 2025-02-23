@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Agent\Agent;
+use App\Agent\AgentBuilderInterface;
 use App\Agent\Message;
 use App\Agent\RolesEnum;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -20,7 +20,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class AgentRunCommand extends Command
 {
     public function __construct(
-        private readonly Agent $agent,
+        private readonly AgentBuilderInterface $agentBuilder,
     ) {
         parent::__construct();
     }
@@ -28,11 +28,10 @@ class AgentRunCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $agent = $this->agentBuilder
+            ->build(new Message(RolesEnum::SYSTEM, 'You are a useful assistant.'));
 
-        $this->agent
-            ->create(new Message(RolesEnum::SYSTEM, 'You are a useful assistant.'))
-        ;
-        $response = $this->agent->run(new Message(RolesEnum::USER, 'Explains what is a black hole.'));
+        $response = $agent->run(new Message(RolesEnum::USER, 'Explains what is a black hole.'));
 
         $io->success((string) $response);
 

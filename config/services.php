@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use App\Agent\Context;
-use App\Agent\ContextInterface;
-use App\Agent\TraceableContext;
+use App\Agent\AgentBuilder;
+use App\Agent\AgentBuilderInterface;
 
 return function (ContainerConfigurator $container): void {
     $services = $container->services()
@@ -18,10 +17,6 @@ return function (ContainerConfigurator $container): void {
     $services->load('App\\', '../src/')
         ->exclude('../src/{DependencyInjection,Entity,Kernel.php}');
 
-    $services->set(ContextInterface::class)
-        ->class(Context::class);
-
-    $services->set(TraceableContext::class)
-        ->decorate(ContextInterface::class)
-        ->arg('$decorated', service('.inner'));
+    $services->set(AgentBuilderInterface::class)
+        ->class(AgentBuilder::class);
 };
