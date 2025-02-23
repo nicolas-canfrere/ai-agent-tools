@@ -5,10 +5,15 @@ declare(strict_types=1);
 namespace App\Agent;
 
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 
 class Agent
 {
+    /**
+     * @param ClientInterface&RequestFactoryInterface&StreamFactoryInterface $httpClient
+     */
     public function __construct(
         private readonly ClientInterface $httpClient,
         private readonly ContextInterface $context,

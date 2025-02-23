@@ -11,7 +11,7 @@ class Response
     private int $created;
     private string $model;
     /**
-     * @var array<string, mixed>
+     * @var array<int, mixed>
      */
     private array $choices;
     /**
@@ -27,9 +27,12 @@ class Response
 
     public function __toString(): string
     {
-        return $this->getMessage() ?? '';
+        return $this->getMessage();
     }
 
+    /**
+     * @param array<string, int|string|array<int|string, mixed>> $response
+     */
     public static function fromArray(array $response, ?float $executionTime = 0): self
     {
         $self = new self();
@@ -52,7 +55,7 @@ class Response
 
     public function getMessage(): string
     {
-        return $this->choices[0]['message']['content'];
+        return $this->choices[0]['message']['content'] ?? '';
     }
 
     public function getExecutionTime(): ?float
@@ -90,16 +93,25 @@ class Response
         return $this->object;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getUsage(): array
     {
         return $this->usage;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getRawData(): array
     {
         return $this->rawData;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getUsageInfos(): array
     {
         return [

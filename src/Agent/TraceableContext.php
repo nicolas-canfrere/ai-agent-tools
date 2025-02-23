@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Agent;
 
 use Psr\Log\LoggerInterface;
@@ -27,7 +29,7 @@ class TraceableContext implements ContextInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getMessages(): array
     {
