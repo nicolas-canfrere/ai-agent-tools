@@ -1,0 +1,9 @@
+parameters:
+    level: 6
+    paths:
+        - config
+        - public
+        - src
+        - tests
+    excludePaths:
+        - tests/bootstrap.php
