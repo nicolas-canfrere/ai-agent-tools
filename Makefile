@@ -30,6 +30,11 @@ vendor: composer.lock composer.json
 	$(COMPOSER_SHELL) install --ignore-platform-reqs --no-scripts
 	@touch vendor
 
+##@ Ccnsole
+.PHONY: console
+console: ## Run console
+	$(DOCKER) -p agent run --rm --no-deps agent-fpm php bin/console $(ARG)
+
 ##@ Code analysis
 .PHONY: apply-cs
 apply-cs: ## Run php-cs-fixer
